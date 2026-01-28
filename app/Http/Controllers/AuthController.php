@@ -25,10 +25,11 @@ class AuthController extends Controller
         $email = request('email');
         $password = request('password');
 
-        echo $email;
-        if($this->AuthService->login($email, $password)) {
+        $user = $this->AuthService->login($email, $password);
 
-            return view('home');
+        if($user) {
+
+            return view('affichage');
         }
     }
 

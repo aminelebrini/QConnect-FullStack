@@ -189,7 +189,7 @@
 <div class="container" id="container">
 
     <div class="form-container sign-up-container">
-        <form method="POST" action="/register">
+        <form method="POST" action="{{ route('register') }}">
             @csrf
             <h1>Créer un compte</h1>
             <div class="input-group">
@@ -206,7 +206,7 @@
     </div>
 
     <div class="form-container sign-in-container">
-        <form method="POST" action="/login">
+        <form method="POST" action="{{ route('login') }}">
             @csrf
             <h1>Connexion</h1>
             <div class="input-group">

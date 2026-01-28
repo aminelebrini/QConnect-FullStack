@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AffichageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -15,5 +16,7 @@ Route::get('/home', [HomeController::class, 'index'])
 
 Route::get('/', function () {
     return redirect('/home');
+
+    Route::get('/affichage', [AffichageController::class, 'index'])->name('affichage.index');
 });
 
