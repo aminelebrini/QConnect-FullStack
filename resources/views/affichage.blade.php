@@ -41,7 +41,7 @@
         .reply-user { font-weight: 700; font-size: 0.85rem; color: var(--text-main); }
         .reply-text { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
 
-        .reply-form { margin-top: 15px; display: flex; gap: 10px; }
+        .reply-form { margin-top: 15px; display: flex; gap: 10px;}
         .reply-input {
             flex: 1; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 20px; outline: none; transition: 0.2s;
         }
@@ -81,53 +81,46 @@
                 <button onclick="openModal()" class="btn-ask"><i class="fa-solid fa-plus"></i> Poser une question</button>
             </div>
 
-            @if(isset($questions) && $questions->count() > 0)
-                @foreach($questions as $question)
-                    <div class="question-card">
-                        <div class="question-header" style="display:flex; align-items:center; gap:12px; margin-bottom:1rem;">
-                            <div class="avatar"><i class="fa-solid fa-user"></i></div>
-                            <div class="user-info">
-                               @if($question->user_id === Auth::user()->id)
-                                    <h4>{{ Auth::user()->fullname ?? 'Anonyme' }}</h4>
-                                    <span style="font-size: 0.85rem; color:var(--text-muted);">Publié {{ $question->created_at->diffForHumans() }}</span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="question-content">
-                            <div class="location-tag"><i class="fa-solid fa-location-dot"></i> {{ $question->city }}</div>
-                            <h2 style="font-size: 1.3rem; margin:10px 0;">{{ $question->titre }}</h2>
-                            <p style="color:var(--text-muted); line-height:1.5;">{{ $question->description }}</p>
-                        </div>
-
-                        <div class="replies-section">
-                            <h5 style="margin-bottom: 10px; font-size: 0.9rem;"><i class="fa-regular fa-comments"></i> Réponses :</h5>
-
-                            {{-- Hna kaddire l-boucle dial les réponses li m3elqin b had l-question --}}
-                            @if(isset($question->replies) && $question->replies->count() > 0)
-                                @foreach($question->replies as $reply)
-                                    <div class="reply-item">
-                                        <div class="reply-user">{{ $reply->user->fullname }}</div>
-                                        <div class="reply-text">{{ $reply->message }}</div>
-                                    </div>
-                                @endforeach
-                            @else
-                                <p style="font-size: 0.8rem; color: var(--text-muted);">Aucune réponse pour le moment.</p>
-                            @endif
-
-                            <form action="{{ route('replies.store', $question->id) }}" method="POST" class="reply-form">
-                                @csrf
-                                <input type="text" name="message" class="reply-input" placeholder="Écrire une réponse..." required>
-                                <button type="submit" class="btn-reply">Répondre</button>
-                            </form>
+            @foreach($questions as $question)
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                        <div class="user-info">
+                            <h4>{{ $question->titre }}</h4>
+                            <span>Publié par {{ $question->user->fullname ?? 'Utilisateur' }} le {{ $question->created_at->format('d M, Y') }}</span>
                         </div>
                     </div>
-                @endforeach
-            @else
-                <div style="text-align: center; padding: 3rem; background: white; border-radius: 16px; border: 2px dashed #e2e8f0;">
-                    <p style="color: var(--text-muted); font-weight: 500;">Aucune question trouvée.</p>
+
+                    <div class="question-content">
+                        <h2>{{ $question->titre }}</h2>
+                        <p>{{ $question->description }}</p>
+                    </div>
+
+                    <div class="replies-section">
+                        <h5 style="margin-bottom: 10px; font-size: 0.9rem;"><i class="fa-regular fa-comments"></i> Réponses :</h5>
+
+                        @if($question->reponses->count() > 0)
+                            @foreach($question->reponses as $reply)
+                                <div class="reply-item">
+                                    <div class="reply-user">{{ $reply->user->fullname ?? 'Utilisateur' }}</div>
+                                    <div class="reply-text">{{ $reply->content }}</div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Aucune réponse pour le moment.</p>
+                        @endif
+
+                        @if($question->user->id !== Auth::user()->id)
+                            <form action="{{ route('reponses.store') }}" method="POST" class="reply-form">
+                                @csrf
+                                <input type="text" name="message" class="reply-input" placeholder="Écrire une réponse..." required>
+                                <input type="hidden" name="question_id" value="{{ $question->id }}">
+                                <button type="submit" class="btn-reply">Répondre</button>
+                            </form>
+                        @endif
+                    </div>
                 </div>
-            @endif
+            @endforeach
         </div>
 
         <div id="postModal" class="modal">

@@ -2,7 +2,7 @@
     namespace App\Http\Services;
 
 
-    use App\Repository\QuestionRepository;
+    use App\Http\Repository\QuestionRepository;
 
 class QuestionService
     {

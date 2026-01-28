@@ -1,8 +1,8 @@
 <?php
 
-    namespace App\Repository;
+    namespace App\Http\Repository;
 
-use App\Models\Question;
+    use App\Models\Question;
 
 class QuestionRepository
 {

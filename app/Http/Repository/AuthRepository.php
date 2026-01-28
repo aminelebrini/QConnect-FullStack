@@ -1,8 +1,7 @@
 <?php
 
-    namespace App\Repository;
+    namespace App\Http\Repository;
     use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthRepository

@@ -29,7 +29,12 @@ class AuthController extends Controller
         if($user) {
 
             Auth::login($user);
-            return redirect('affichage');
+            if($user->role == 'admin'){
+                return redirect()->route('admindash');
+            }else
+            {
+                return redirect()->route('affichage');
+            }
         }
     }
 
