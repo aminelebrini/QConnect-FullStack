@@ -16,154 +16,51 @@
             --text-muted: #64748b;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Navbar */
-        nav {
-            background: white;
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo { font-weight: 800; font-size: 1.5rem; color: var(--primary); }
-
-        /* Container principal */
-        .container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Header de la page */
-        .header-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 0; }
+        nav { background: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .logo { font-weight: 800; font-size: 1.5rem; color: var(--primary); text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
 
         .btn-ask {
-            background: var(--primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            cursor: pointer;
-            border: none;
+            background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;
+            font-weight: 600; transition: 0.3s; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px;
         }
 
-        .btn-ask:hover { background: var(--primary-dark); }
-
-        /* MODAL CSS - Zdt hadchi darouri bach l-modal t-ban s7i7 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-        }
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-        }
-        .close-btn {
-            position: absolute;
-            right: 20px; top: 10px;
-            font-size: 28px;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; box-sizing: border-box;
-        }
-        .btn-submit {
-            background: var(--primary); color: white; border: none; padding: 12px;
-            border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer;
-        }
-
-        /* Question Card */
         .question-card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e2e8f0;
+            background: var(--card); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;
         }
 
-        .question-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+        /* --- Section Réponses --- */
+        .replies-section { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9; }
+
+        .reply-item {
+            background: #f8fafc; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid var(--primary);
+        }
+        .reply-user { font-weight: 700; font-size: 0.85rem; color: var(--text-main); }
+        .reply-text { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
+
+        .reply-form { margin-top: 15px; display: flex; gap: 10px; }
+        .reply-input {
+            flex: 1; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 20px; outline: none; transition: 0.2s;
+        }
+        .reply-input:focus { border-color: var(--primary); }
+        .btn-reply {
+            background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px;
+            cursor: pointer; font-weight: 600; font-size: 0.85rem;
         }
 
-        .avatar {
-            width: 40px;
-            height: 40px;
-            background: #e2e8f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-        }
-
+        /* Styles existants pour l'avatar et modal... */
+        .avatar { width: 45px; height: 45px; background: #eef2ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); }
         .user-info h4 { margin: 0; font-size: 1rem; }
-        .user-info span { font-size: 0.8rem; color: var(--text-muted); }
+        .location-tag { display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; }
 
-        .question-content h2 {
-            margin: 0.5rem 0;
-            font-size: 1.25rem;
-            color: var(--primary);
-        }
-
-        .location-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #eef2ff;
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .stats {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #f1f5f9;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .stats i { color: var(--primary); cursor: pointer; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); }
+        .modal-content { background-color: white; margin: 5% auto; padding: 2.5rem; border-radius: 16px; width: 90%; max-width: 500px; position: relative; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; width: 100%; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -171,65 +68,85 @@
 @auth
     @if(Auth::user()->role === 'user')
         <nav>
-            <div class="logo">QC QConnect</div>
+            <a href="#" class="logo">QC QConnect</a>
             <div class="user-menu">
-                <span><i class="fa-solid fa-user"></i> {{ Auth::user()->fullname }}</span>
-                <a href="/logout" style="margin-left:15px; color:red; text-decoration:none;">Déconnexion</a>
+                <span style="font-weight: 600;"><i class="fa-solid fa-circle-user"></i> {{ Auth::user()->fullname }}</span>
+                <a href="/logout" style="margin-left:20px; color: #ef4444; text-decoration:none; font-weight: 600;">Déconnexion</a>
             </div>
         </nav>
 
         <div class="container">
             <div class="header-actions">
-                <h1>Questions à proximité</h1>
-                {{-- Sallaht l-function call hna --}}
-                <a onclick="openModal()" class="btn-ask"><i class="fa-solid fa-plus"></i> Poser une question</a>
+                <h1 style="font-size: 1.8rem; font-weight: 800;">Questions à proximité</h1>
+                <button onclick="openModal()" class="btn-ask"><i class="fa-solid fa-plus"></i> Poser une question</button>
             </div>
 
-            {{-- Jerréb t-7eyed had les commentaires bach t-affichie l-data dyalk --}}
-{{--            @if(isset($questions))--}}
-{{--                @forelse($questions as $question)--}}
+            @if(isset($questions) && $questions->count() > 0)
+                @foreach($questions as $question)
                     <div class="question-card">
-                        <div class="question-header">
+                        <div class="question-header" style="display:flex; align-items:center; gap:12px; margin-bottom:1rem;">
                             <div class="avatar"><i class="fa-solid fa-user"></i></div>
                             <div class="user-info">
-{{--                                <h4>{{ $question->user->fullname ?? 'Utilisateur' }}</h4>--}}
-{{--                                <span>Publié le {{ $question->created_at->format('d M, Y') }}</span>--}}
+                               @if($question->user_id === Auth::user()->id)
+                                    <h4>{{ Auth::user()->fullname ?? 'Anonyme' }}</h4>
+                                    <span style="font-size: 0.85rem; color:var(--text-muted);">Publié {{ $question->created_at->diffForHumans() }}</span>
+                                @endif
                             </div>
                         </div>
 
                         <div class="question-content">
-{{--                            <div class="location-tag"><i class="fa-solid fa-location-dot"></i> {{ $question->localisation }}</div>--}}
-{{--                            <h2>{{ $question->titre }}</h2>--}}
-{{--                            <p>{{ Str::limit($question->contenu, 150) }}</p>--}}
+                            <div class="location-tag"><i class="fa-solid fa-location-dot"></i> {{ $question->city }}</div>
+                            <h2 style="font-size: 1.3rem; margin:10px 0;">{{ $question->titre }}</h2>
+                            <p style="color:var(--text-muted); line-height:1.5;">{{ $question->description }}</p>
                         </div>
 
-                        <div class="stats">
-                            <span><i class="fa-regular fa-comment"></i> {{ $question->responses_count ?? 0 }} réponses</span>
-                            <span><i class="fa-regular fa-star"></i> Ajouter aux favoris</span>
+                        <div class="replies-section">
+                            <h5 style="margin-bottom: 10px; font-size: 0.9rem;"><i class="fa-regular fa-comments"></i> Réponses :</h5>
+
+                            {{-- Hna kaddire l-boucle dial les réponses li m3elqin b had l-question --}}
+                            @if(isset($question->replies) && $question->replies->count() > 0)
+                                @foreach($question->replies as $reply)
+                                    <div class="reply-item">
+                                        <div class="reply-user">{{ $reply->user->fullname }}</div>
+                                        <div class="reply-text">{{ $reply->message }}</div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p style="font-size: 0.8rem; color: var(--text-muted);">Aucune réponse pour le moment.</p>
+                            @endif
+
+                            <form action="{{ route('replies.store', $question->id) }}" method="POST" class="reply-form">
+                                @csrf
+                                <input type="text" name="message" class="reply-input" placeholder="Écrire une réponse..." required>
+                                <button type="submit" class="btn-reply">Répondre</button>
+                            </form>
                         </div>
                     </div>
-{{--                @endforelse--}}
-{{--            @endif--}}
+                @endforeach
+            @else
+                <div style="text-align: center; padding: 3rem; background: white; border-radius: 16px; border: 2px dashed #e2e8f0;">
+                    <p style="color: var(--text-muted); font-weight: 500;">Aucune question trouvée.</p>
+                </div>
+            @endif
         </div>
 
-        {{-- L-Modal --}}
         <div id="postModal" class="modal">
             <div class="modal-content">
                 <span class="close-btn" onclick="closeModal()">&times;</span>
-                <h2>Poser une question</h2>
-                <form action="" method="POST">
+                <h2 style="margin-bottom: 1.5rem; font-weight: 800;">Poser une question</h2>
+                <form action="{{ route('questions') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label>Titre</label>
-                        <input type="text" name="titre" required>
+                        <input type="text" name="titre" placeholder="Ex: Panne d'électricité" required>
                     </div>
                     <div class="form-group">
                         <label>Localisation</label>
-                        <input type="text" name="localisation" required>
+                        <input type="text" name="city" placeholder="Votre ville" required>
                     </div>
                     <div class="form-group">
-                        <label>Détails</label>
-                        <textarea name="contenu" rows="4" required></textarea>
+                        <label>Description</label>
+                        <textarea name="description" rows="4" placeholder="Détails..." required></textarea>
                     </div>
                     <button type="submit" class="btn-submit">Publier</button>
                 </form>
@@ -241,9 +158,6 @@
 <script>
     function openModal() { document.getElementById('postModal').style.display = 'block'; }
     function closeModal() { document.getElementById('postModal').style.display = 'none'; }
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('postModal')) closeModal();
-    }
 </script>
 </body>
 </html>

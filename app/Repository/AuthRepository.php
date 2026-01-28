@@ -11,17 +11,16 @@ class AuthRepository
         {
             $user = User::where('email', $email)->first();
 
-            if(Hash::check($password, $user->password)){
-                Auth::login($user);
-
-                return redirect('/affichage');
+            if ($user && Hash::check($password, $user->password)) {
+                return $user;
             }
         }
 
-        public function register($FULL_NAME, $EMAIL, $password)
+        public function register($FULL_NAME,$City ,$EMAIL, $password)
         {
             $user = new User();
             $user->fullname = $FULL_NAME;
+            $user->location = $City;
             $user->email = $EMAIL;
             $user->password = Hash::make($password);
 

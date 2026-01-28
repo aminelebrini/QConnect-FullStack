@@ -1,22 +1,28 @@
 <?php
 
-use App\Http\Controllers\AffichageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'Show'])->name('login');
-Route::get('/register', [AuthController::class, 'Show'])->name('register');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
-Route::get('/home', [HomeController::class, 'index'])
-    ->middleware('auth')
-    ->name('home');
+Route::get('/register', [AuthController::class, 'Show'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 Route::get('/', function () {
-    return redirect('/home');
-
-    Route::get('/affichage', [AffichageController::class, 'index'])->name('affichage.index');
+    return redirect()->route('home');
 });
 
+// Routes protégées par auth
+Route::middleware('auth')->group(function () {
+
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    Route::get('/affichage', [QuestionController::class, 'index'])->name('affichage');
+
+    Route::post('/createQuestion', [QuestionController::class, 'Question'])->name('questions');
+
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});

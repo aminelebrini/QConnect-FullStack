@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Services\AuthService;
+use App\Http\Services\AuthService;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -29,21 +28,28 @@ class AuthController extends Controller
 
         if($user) {
 
-            return view('affichage');
+            Auth::login($user);
+            return redirect('affichage');
         }
     }
 
     public function register()
     {
         $FULL_NAME = request('full_name');
-        echo $FULL_NAME;
+        $City = request('city');
         $EMAIL = request('email');
         $password = request('password');
 
-        if($this->AuthService->register($FULL_NAME, $EMAIL, $password)) {
+        if($this->AuthService->register($FULL_NAME,$City ,$EMAIL, $password)) {
             return view('home');
         }
 
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('home');
     }
 
 }

@@ -1,7 +1,6 @@
 <?php
-    namespace App\Services;
+    namespace App\Http\Services;
 
-    use App\Repository;
     use App\Repository\AuthRepository;
 
 class AuthService
@@ -18,9 +17,9 @@ class AuthService
             return $this->AuthRepository->login($email, $password);
         }
 
-        public function register($FULL_NAME, $EMAIL, $password)
+        public function register($FULL_NAME,$City ,$EMAIL, $password)
         {
-            return $this->AuthRepository->register($FULL_NAME, $EMAIL, $password);
+            return $this->AuthRepository->register($FULL_NAME, $City ,$EMAIL, $password);
         }
     }
 ?>
