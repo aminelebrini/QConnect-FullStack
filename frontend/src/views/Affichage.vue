@@ -98,9 +98,9 @@
                 <button type="button" @click="isFormVisible = false" class="px-8 py-4 rounded-2xl font-extrabold text-slate-400 hover:bg-slate-50 transition-all">
                 Annuler
                 </button>
-                <button type="submit" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-extrabold shadow-lg shadow-indigo-100 hover:scale-[1.03] active:scale-[0.97] transition-all flex items-center gap-2">
-                <i class="fa-solid fa-paper-plane text-xs"></i>
-                Publier la question
+                <button @submit.prevent="submitQuestion" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-extrabold shadow-lg shadow-indigo-100 hover:scale-[1.03] active:scale-[0.97] transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                    Publier la question
                 </button>
             </div>
             </form>
@@ -185,13 +185,20 @@
         if (!form.titre || !form.city) return alert("3emmer ga3 l-blasat a sidi!");
 
         try{
-            const reponse = await api.post('/questions',form);
+            const reponse = await api.post('/questions',form,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+                }
+            });
+            
+            console.log(localStorage.getItem('auth_token'));
             form.titre = "",
             form.city = "",
             form.description = ""
             isFormVisible.value = false;
 
             await getQuestions();
+
 
         }catch(error){
             console.log(error);

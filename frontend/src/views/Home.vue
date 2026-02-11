@@ -14,21 +14,21 @@
       <input v-model="email" placeholder="Email" class="input"/>
       <input v-model="password" type="password" placeholder="Password" class="input"/>
 
-      <button @click="submit"
-        class="w-full py-3 mt-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold hover:scale-105 transition">
-        {{ isLogin ? "Login" : "Register" }}
+      <button @click.prevent="submit" :disabled="isLoading"
+        class="w-full py-3 mt-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold hover:scale-105 transition disabled:opacity-50">
+        {{ isLoading ? "Sabre..." : (isLogin ? "Login" : "Register") }}
       </button>
 
-      <p v-if="error" class="text-red-300 text-center mt-3">{{ error }}</p>
+      <p v-if="error" class="text-red-300 text-center mt-3 font-semibold">{{ error }}</p>
 
       <p class="text-white text-center mt-5 text-sm">
         <span v-if="isLogin">
           No account? 
-          <a @click="isLogin=false" class="underline cursor-pointer">Sign up</a>
+          <a @click="isLogin=false" class="underline cursor-pointer font-bold">Sign up</a>
         </span>
         <span v-else>
           Already registered? 
-          <a @click="isLogin=true" class="underline cursor-pointer">Login</a>
+          <a @click="isLogin=true" class="underline cursor-pointer font-bold">Login</a>
         </span>
       </p>
 
@@ -48,49 +48,67 @@ export default {
       city: "",
       email: "",
       password: "",
-      error: ""
+      error: "",
+      isLoading: false
     };
   },
   methods: {
-
     async submit() {
       this.error = "";
       this.isLoading = true;
 
       try {
-        const response = await api.post('/login', {
-          email: this.email,
-          password: this.password
-        });
+        let response;
+
+        if (this.isLogin) {
+          response = await api.post('/login', {
+            email: this.email,
+            password: this.password
+          });
+        } else {
+          response = await api.post('/register', {
+            full_name: this.full_name,
+            city: this.city,
+            email: this.email,
+            password: this.password
+          });
+        }
 
         console.log("Success!", response.data);
 
-        localStorage.setItem('user_data', JSON.stringify(response.data));
+        if (response.data.token) {
+          localStorage.setItem('auth_token', response.data.token);
+        }
 
-        if(response.data.role === 'admin')
-        {
-          this.$router.push('/Admindash')
-        }else{
-          this.$router.push('/Affichage')
+        console.log(localStorage.getItem('auth_token'));
+
+        const userData = response.data.result || response.data.user || response.data;
+        localStorage.setItem('user_data', JSON.stringify(userData));
+
+        if (userData.role === 'admin') {
+          this.$router.push('/Admindash');
+        } else {
+          this.$router.push('/Affichage');
         }
 
       } catch (err) {
-
-        if (err.response && err.response.status === 401) {
-          this.error = "Identifiant incorrect a sahbi!";
-        } else if (err.response && err.response.status === 422) {
-          this.error = "Dakchi li dkhlti ma m9adch.";
+        console.error("Erreur detaillée:", err);
+        if (err.response) {
+          if (err.response.status === 401) {
+            this.error = "Email awla Password ghaltin!";
+          } else if (err.response.status === 422) {
+            this.error = "Dakchi li dkhlti ma m9adch (Email déjà utilisé?).";
+          } else {
+            this.error = "Mochkil f serveur (Erreur " + err.response.status + ")";
+          }
         } else {
-          this.error = "Mochkil f serveur.";
+          this.error = "Mochkil f connexion m3a l-backend.";
         }
-
       } finally {
         this.isLoading = false;
       }
     }
-
   }
-
 };
 </script>
 
@@ -104,5 +122,8 @@ export default {
   border: 1px solid rgba(255,255,255,0.3);
   color: white;
   outline: none;
+}
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 </style>

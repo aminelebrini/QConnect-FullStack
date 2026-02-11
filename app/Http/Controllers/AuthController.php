@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Services\AuthService;
-
+use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     private $AuthService;
@@ -16,17 +16,29 @@ class AuthController extends Controller
         $this->AuthService = $AuthService;
     }
 
-    public function login(Request $request) {
+    public function show()
+    {
+        return view('home');
+    }
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-
-    $result = $this->AuthService->login($request->email, $request->password);
+        $result = $this->AuthService->login($request->email, $request->password);
 
         if (!$result) {
             return response()->json(['message' => 'Ghalat a sahbi!'], 401);
         }
-
-        return response()->json($result, 200);
+        $token = $result->createToken('auth_token')->plainTextToken;
+        return response()->json([
+            'result'=> $result,
+            'token' => $token
+            ], 200);
     }
+    
 
     public function register(Request $request)
     {

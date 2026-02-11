@@ -3,7 +3,7 @@
     namespace App\Http\Repository;
 
     use App\Models\Favoris;
-use App\Models\Question;
+    use App\Models\Question;
 
 class QuestionRepository
 {
@@ -15,7 +15,6 @@ class QuestionRepository
             'user_id' => $user_id,
             'city' => $city
         ]);
-
         $question->save();
         return $question;
     }
