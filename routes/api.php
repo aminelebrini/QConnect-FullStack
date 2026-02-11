@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ReponseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +12,7 @@ Route::get('/questions', [QuestionController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/questions', [QuestionController::class, 'Question']);
+     Route::post('/responses', [ReponseController::class, 'Reponse']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

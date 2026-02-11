@@ -16,7 +16,6 @@ class QuestionController extends Controller
         $this->questionService = $questionService;
     }
 
-    // Create a new question
     public function Question(Request $request)
     {
         $request->validate([

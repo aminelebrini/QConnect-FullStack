@@ -6,6 +6,8 @@ use App\Http\Services\ReponseService;
 use App\Models\Question;
 use App\Models\Reponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class ReponseController extends Controller
 {
@@ -19,17 +21,19 @@ class ReponseController extends Controller
     public function Reponse(Request $request)
     {
         $request->validate([
-            'message' => 'required|string',
+            'content' => 'required|string',
             'question_id' => 'required|exists:questions,id',
         ]);
-
+        $user = Auth::user();
         $this->reponseService->createReponse(
-            $request->message,
-            auth()->id(),
+            $request->content,
+            $user->id,
             $request->question_id
         );
 
-        return redirect()->route('affichage');
+        return response()->json([
+            'message' => 'Réponse ajoutée avec succès'
+        ]);
     }
 
     public function index()
