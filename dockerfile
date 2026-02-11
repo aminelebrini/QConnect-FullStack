@@ -20,12 +20,22 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY . /var/www/html/
 
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && apt-get install -y nodejs   
+
+COPY package*.json ./
+
+RUN npm install
+
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 RUN groupadd -g ${GID} laravel && \
     useradd -u ${UID} -g laravel -m -s /bin/bash laravel
 
 RUN usermod -aG www-data laravel
+
+
+RUN npm install vue@latest @vitejs/plugin-vue
+
 
 COPY . /var/www/html/
 

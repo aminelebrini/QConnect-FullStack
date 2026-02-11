@@ -2,59 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Services\AuthService;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     private $AuthService;
 
-    public  function __construct(AuthService $authService)
+    public function __construct(AuthService $AuthService)
     {
-        $this->AuthService = $authService;
+        $this->AuthService = $AuthService;
     }
 
-    public function Show()
-    {
-        return view('home');
-    }
+    public function login(Request $request) {
 
-    public  function login(){
 
-        $email = request('email');
-        $password = request('password');
+    $result = $this->AuthService->login($request->email, $request->password);
 
-        $user = $this->AuthService->login($email, $password);
-
-        if($user) {
-
-            Auth::login($user);
-            if($user->role == 'admin'){
-                return redirect()->route('admindash');
-            }else
-            {
-                return redirect()->route('affichage');
-            }
-        }
-    }
-
-    public function register()
-    {
-        $FULL_NAME = request('full_name');
-        $City = request('city');
-        $EMAIL = request('email');
-        $password = request('password');
-
-        if($this->AuthService->register($FULL_NAME,$City ,$EMAIL, $password)) {
-            return view('home');
+        if (!$result) {
+            return response()->json(['message' => 'Ghalat a sahbi!'], 401);
         }
 
+        return response()->json($result, 200);
     }
 
-    public function logout()
+    public function register(Request $request)
     {
-        Auth::logout();
-        return redirect('home');
-    }
+        return $this->AuthService->register(
+            $request->full_name,
+            $request->city,
+            $request->email,
+            $request->password
+        );
+}
 
 }

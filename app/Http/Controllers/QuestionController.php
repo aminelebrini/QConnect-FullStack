@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Services\QuestionService;
 use App\Models\Favoris;
 use App\Models\Question;
+use App\Http\Middleware\auth;
 use Illuminate\Http\Request;
 class QuestionController extends Controller
 {
@@ -19,7 +20,7 @@ class QuestionController extends Controller
     {
         $titre = request('titre');
         $description = request('description');
-        $user_id = auth()->id();
+        $user_id = auth()->user()->id();
         $city = request('city');
 
         if($this->questionService->createQuestion($titre, $description, $user_id,$city)) {
@@ -70,18 +71,22 @@ class QuestionController extends Controller
 
     public function index()
     {
-        $user = auth()->user();
-        $search = request('search');
-        $favoris = Favoris::with('question.reponses')->where('user_id', $user->id)->get();
-        if ($search) {
-            $questions = Question::where('titre', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%")
-                ->get();
-        } else {
-            $questions = Question::all();
-        }
-
-        return view('affichage', compact('questions','favoris'));
+        // $user = auth()->id();
+        // $search = request('search');
+        // $favoris = Favoris::with('question.reponses')->where('user_id', $user->id)->get();
+        // if ($search) {
+        //     $questions = Question::where('titre', 'like', "%{$search}%")
+        //         ->orWhere('description', 'like', "%{$search}%")
+        //         ->get();
+        // } else {
+        //     $questions = Question::all();
+        // }
+        $questions = Question::with('user')->latest()->get();
+        return response()->json(
+        [
+            'questions' => $questions,
+            'user'      => auth()->user(),
+        ]);
 
     }
 

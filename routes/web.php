@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ReponseController;
+use App\Http\Controllers\FavorisController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'Show'])->name('login');
