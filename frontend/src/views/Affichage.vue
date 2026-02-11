@@ -4,8 +4,8 @@
     <aside class="w-[280px] bg-white border-r border-slate-100 p-8 flex flex-col fixed h-full z-50">
   
     <a href="#" class="flex items-center gap-3 text-2xl font-extrabold text-[#0f172a] tracking-tight mb-12 ml-2">
-        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
-            <i class="fa-solid fa-street-view text-white -rotate-12"></i>
+        <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 text-white">
+            {{ 'QConnect'.charAt(0) + 'QConnect'.charAt(1) }}
         </div>
         QConnect
     </a>
@@ -61,7 +61,7 @@
         <div class="bg-white p-8 rounded-[32px] shadow-xl shadow-slate-200/40 border border-slate-50 mb-12">
           <div class="flex items-center gap-4 mb-8">
             <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center">
-              <i class="fa-solid fa-pen-to-square text-xl"></i>
+              {{ 'QConnect'.charAt(0) + 'QConnect'.charAt(1) }}
             </div>
             <h1 class="text-2xl font-extrabold text-[#0f172a] tracking-tight">Question à poser</h1>
           </div>
