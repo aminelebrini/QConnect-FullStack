@@ -48,7 +48,7 @@ class QuestionController extends Controller
 
     public function index()
     {
-        $questions = Question::with('user')->latest()->get();
+        $questions = Question::with(['user', 'reponses.user'])->latest()->get();
         return response()->json(['questions' => $questions]);
     }
 }

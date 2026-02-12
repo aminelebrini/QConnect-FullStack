@@ -134,17 +134,17 @@
                 
                 <div v-if="item.reponses && item.reponses.length" class="space-y-4 mb-6">
                     <div v-for="rep in item.reponses" :key="rep.id" class="flex gap-3 items-start">
-                        <div class="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center text-[10px] font-bold text-slate-400 uppercase shrink-0">
-                            {{ rep.user?.full_name?.charAt(0) || '?' }}
+                        <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-[14px] font-bold text-slate-400 uppercase shrink-0">
+                            {{ rep.user?.fullname?.charAt(0) || '?' }}
                         </div>
                         <div class="flex-1 bg-slate-50/50 p-3 rounded-2xl rounded-tl-none border border-slate-100">
-                            <p class="text-[10px] font-bold text-indigo-600 mb-1">{{ rep.user?.full_name }}</p>
-                            <p class="text-xs text-slate-600 font-medium">{{ rep.description }}</p>
+                            <p class="text-[17px] font-bold text-indigo-600 mb-1">{{ rep.user?.fullname }}</p>
+                            <p class="text-[14px] text-slate-600 font-medium">{{ rep.content }}</p>
                         </div>
                     </div>
                 </div>
                 <p v-else class="text-xs text-slate-400 italic mb-4">Aucune réponse pour le moment...</p>
-                <div class="relative mt-6 flex items-center gap-3 group">
+                <div v-if="currentUser?.id !== item.user?.id" class="relative mt-6 flex items-center gap-3 group">
                     <div class="relative flex-1">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors">
                             <i class="fa-solid fa-comment-dots text-sm"></i>
@@ -168,7 +168,7 @@
                     >
                         <i class="fa-solid fa-paper-plane"></i>
                         <span>Répondre</span>
-                </button>
+                    </button>
                 </div>         
             </div>
           </div>
@@ -182,7 +182,7 @@
 <script setup>
     import api from '@/services/api';
     
-    import { ref , onMounted, reactive, useId } from 'vue';
+    import { ref , onMounted, reactive } from 'vue';
     import axios from 'axios';
 
     const questions = ref([]);
@@ -240,23 +240,26 @@
     const sendReponse = async (questionId) => {
     if(!formRes.content) return alert("Le message est obligatoire !");
 
-    try {
-        await api.post('/responses', {
-            content: formRes.content,
-            question_id: questionId,
-            user_id: currentUser.id
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('auth_token')}`
-            }
-        });
+        try {
+            await api.post('/responses', {
+                content: formRes.content,
+                question_id: questionId,
+                user_id: currentUser.id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+                }
+            });
 
-        formRes.content = "";
-        await getQuestions();
-    } catch (error) {
-        console.log(error.response?.data || error);
+            formRes.content = "";
+            await getQuestions();
+        } catch (error) {
+            console.log(error.response?.data || error);
+        }
     }
-}
+    const openCreateModal = () => {
+        isFormVisible.value = true;
+    };
     onMounted(() => {
 
         getQuestions();

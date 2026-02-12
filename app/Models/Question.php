@@ -11,13 +11,11 @@ class Question extends Model
 
     protected $fillable = ['titre', 'description', 'user_id'];
 
-    // Relation avec les réponses
     public function reponses()
     {
         return $this->hasMany(Reponse::class);
     }
 
-    // Relation avec l'utilisateur
     public function user()
     {
         return $this->belongsTo(User::class);
