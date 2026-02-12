@@ -86,7 +86,7 @@ export default {
         localStorage.setItem('user_data', JSON.stringify(userData));
 
         if (userData.role === 'admin') {
-          this.$router.push('/Admindash');
+          this.$router.push('/Admin');
         } else {
           this.$router.push('/Affichage');
         }

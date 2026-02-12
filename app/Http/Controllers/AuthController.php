@@ -48,6 +48,15 @@ class AuthController extends Controller
             $request->email,
             $request->password
         );
+    }
+
+    public function logout(Request $request)
+{
+    $request->user()->currentAccessToken()->delete();
+
+    return response()->json([
+        'message' => 'Déconnecté avec succès'
+    ]);
 }
 
 }

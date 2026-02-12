@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavorisController;
 use App\Http\Controllers\QuestionController;
@@ -17,7 +18,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/responses', [ReponseController::class, 'Reponse']);
     Route::post('/send', [FavorisController::class, 'favoris']);
     Route::get('get',[FavorisController::class, 'index']);
-
+    Route::get('/Admin', [AdminDashController::class, 'index']);
+    Route::post('/Home', [AuthController::class, 'logout']);
+    
 
     Route::get('/user', function (Request $request) {
         return $request->user();

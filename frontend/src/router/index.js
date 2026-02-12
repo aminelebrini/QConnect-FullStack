@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/views/Home.vue";
 import Affichage from "@/views/Affichage.vue";
+import Admin from "@/views/Admin.vue";
 
 const routes = [
     {
@@ -13,6 +14,11 @@ const routes = [
         path : '/Affichage',
         name : 'Affichage',
         component : Affichage
+    },
+    {
+        path : '/Admin',
+        name : 'Admin',
+        component : Admin
     }
 ];
 

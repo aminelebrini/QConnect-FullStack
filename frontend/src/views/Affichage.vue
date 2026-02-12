@@ -251,6 +251,8 @@
     
     import { ref , onMounted, reactive } from 'vue';
     import axios from 'axios';
+    import { useRouter } from 'vue-router';
+    const router = useRouter();
 
     const questions = ref([]);
     const currentUser = ref(null);
@@ -377,6 +379,21 @@
         }
     });
 
+    const logout = async () => {
+    try {
+        await api.post('/logout', {}, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+            }
+        });
+    } catch (error) {
+        console.error("Erreur Backend Logout:", error);
+    } finally {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_data');
 
+        router.push('/');
+    }
+};
 </script>
 
