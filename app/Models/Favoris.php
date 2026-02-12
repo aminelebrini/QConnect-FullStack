@@ -9,23 +9,22 @@ class Favoris extends Model
 {
     use HasFactory;
 
+    protected $table = 'favoris';
     protected $fillable = [
         'user_id',
         'question_id',
     ];
 
-    public function question()
-    {
-        return $this->belongsTo(Question::class, 'question_id');
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
-    public function reponse()
-    {
-        return $this->belongsTo(Reponse::class, 'reponse_id');
+    public function question() {
+        return $this->belongsTo(Question::class);
     }
 
-    public function user()
+    public function reponses()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasMany(Reponse::class);
     }
 }

@@ -114,15 +114,13 @@
                     <i class="fa-solid fa-location-dot"></i> {{ item.location }}
                   </div>
                 </div>
-              </div>
-
-              <div class="flex gap-2">
-                <button @click="toggleFavoris(item.id)" class="action-btn hover:text-amber-500 hover:bg-amber-50">
-                  <i class="fa-solid fa-star"></i>
-                </button>
-                <button v-if="item.user_id === currentUser.id" @click="openEditModal(item)" class="action-btn hover:text-indigo-600 hover:bg-indigo-50">
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </button>
+                <div class="flex gap-2">
+                    <button 
+                        @click.prevent="toggleFavoris(item.id)" 
+                        class="w-11 h-11 rounded-xl bg-slate-50 text-slate-300 transition-all flex items-center justify-center border border-slate-100 group hover:bg-amber-50 hover:border-amber-100 hover:text-amber-500 hover:scale-105 active:scale-95">
+                       <i class="fa-solid fa-star text-slate-300 transition-all group-hover:text-amber-500 group-hover:scale-125"></i>
+                    </button>
+                </div>
               </div>
             </div>
 
@@ -173,6 +171,75 @@
             </div>
           </div>
         </div>
+        <!--222-->
+        <div class="space-y-10 hidden">
+            <h1 class="text-[30px]">Mes Favoris</h1>
+            <div v-for="item in favoris" :key="item.id" 
+                class="group bg-white p-8 rounded-[32px] shadow-xl shadow-slate-200/40 border border-slate-50 transition-all hover:scale-[1.01] relative overflow-hidden">
+        
+                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-amber-400 to-amber-200"></div>
+
+                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center font-extrabold text-xl uppercase border-2 border-white shadow-sm">
+                        {{ item.question?.user?.fullname.charAt(0) || '?' }}
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-[#0f172a] tracking-tight">
+                            {{ item.question?.user?.fullname || 'Anonyme' }}
+                        </h3>
+                        <div class="flex items-center gap-2 text-[10px] font-black text-amber-500 uppercase tracking-[1.5px]">
+                            <i class="fa-solid fa-star"></i> ENREGISTRÉ
+                        </div>
+                    </div>
+                </div>
+
+                <button @click.prevent="toggleFavoris(item.question_id)" 
+                    class="w-10 h-10 rounded-xl bg-slate-50 text-slate-300 hover:bg-red-50 hover:text-red-500 transition-all flex items-center justify-center border border-slate-100 group/btn">
+                    <i class="fa-solid fa-trash-can text-sm transition-transform group-hover/btn:rotate-12"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 mb-8">
+                <div class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase">
+                    <i class="fa-solid fa-location-dot text-indigo-400"></i> {{ item.question?.city || 'Local' }}
+                </div>
+                <h2 class="text-xl font-extrabold text-[#0f172a] leading-tight group-hover:text-indigo-600 transition-colors">
+                    {{ item.question?.titre }}
+                </h2>
+                <p class="text-slate-500 font-medium leading-relaxed italic border-l-4 border-amber-100 pl-4 text-sm">
+                    " {{ item.question?.description }} "
+                </p>
+            </div>
+
+            <div class="pt-6 border-t border-slate-50 bg-slate-50/30 -mx-8 -mb-8 px-8 pb-8 rounded-b-[32px]">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Discussion</p>
+                    <span v-if="item.question?.reponses?.length" class="bg-indigo-100 text-indigo-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        {{ item.question.reponses.length }} RÉPONSES
+                    </span>
+                </div>
+            
+                <div v-if="item.question?.reponses && item.question.reponses.length" class="space-y-4">
+                    <div v-for="rep in item.question.reponses" :key="rep.id" class="flex gap-3 items-start">
+                        <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-[10px] font-bold text-slate-400 uppercase shrink-0 shadow-sm border border-slate-100">
+                            {{ rep.user?.fullname?.charAt(0) || '?' }}
+                        </div>
+                        <div class="flex-1 bg-white p-3 rounded-2xl rounded-tl-none border border-slate-100 shadow-sm">
+                            <p class="text-[11px] font-bold text-indigo-600 uppercase mb-1">{{ rep.user?.fullname }}</p>
+                            <p class="text-xs text-slate-600 font-medium leading-relaxed">{{ rep.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            
+                <div v-else class="flex flex-col items-center py-4 text-center">
+                    <i class="fa-solid fa-comments text-slate-200 text-xl mb-1"></i>
+                    <p class="text-[11px] text-slate-400 font-bold italic uppercase tracking-wider">Soyez le premier à répondre</p>
+                </div>       
+            </div>
+        </div>
+        </div>
+        <!---222-->
       </div>
     </main>
   </div>
@@ -200,6 +267,8 @@
         question_id: ''
     });
 
+    const favoris = ref([]);
+
     const getQuestions = async ()=>{
 
         try{
@@ -211,6 +280,21 @@
         }
     }
 
+    const getFavoris = async () =>{
+        try{
+            const response = await api.get('/get',{
+                headers: {
+                Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+            }
+            });
+            favoris.value = response.data.favoris;
+            console.log(favoris.value);
+
+        }catch(error)
+        {
+            console.log("error de recuperation!", error);
+        }
+    }
     const submitQuestion = async ()=>{
 
         if (!form.titre || !form.city) return alert("3emmer ga3 l-blasat a sidi!");
@@ -260,9 +344,30 @@
     const openCreateModal = () => {
         isFormVisible.value = true;
     };
+
+    const toggleFavoris = async (question_Id) =>{
+        try{
+            await api.post(
+            '/send',
+            { question_id: question_Id},
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+                }
+            }
+        );
+            await getQuestions();
+            console.log(currentUser.value.id);
+        }catch(error)
+        {
+            console.log(error);
+        }
+
+    }
     onMounted(() => {
 
         getQuestions();
+        getFavoris();
 
         const data = localStorage.getItem('user_data');
 

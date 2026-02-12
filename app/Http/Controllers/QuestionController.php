@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\QuestionService;
+use App\Models\Favoris;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -48,7 +49,11 @@ class QuestionController extends Controller
 
     public function index()
     {
+        
         $questions = Question::with(['user', 'reponses.user'])->latest()->get();
-        return response()->json(['questions' => $questions]);
+        return response()->json(
+            [
+                'questions' => $questions,
+            ]);
     }
 }
